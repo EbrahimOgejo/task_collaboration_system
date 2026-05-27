@@ -3,6 +3,7 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import Button from "../../components/ui/Button";
 import TeamCard from "../../components/teams/TeamCard";
 import CreateTeamModal from "../../components/teams/CreateTeamModal";
+import Spinner from "../../components/ui/Spinner";
 
 import {
   getTeams,
@@ -60,9 +61,7 @@ export default function TeamsPage() {
             </p>
           </div>
 
-          <Button
-            onClick={() => setShowModal(true)}
-          >
+          <Button onClick={() => setShowModal(true)}>
             Create Team
           </Button>
         </div>

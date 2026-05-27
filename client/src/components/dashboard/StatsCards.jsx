@@ -6,28 +6,26 @@ import {
   Briefcase
 } from "lucide-react";
 
-export default function StatsCards({
-  stats
-}) {
+export default function StatsCards({ stats = {} }) {
   const cards = [
     {
       title: "Total Tasks",
-      value: stats.total_tasks || 0,
+      value: stats?.total_tasks ?? 0,
       icon: CheckCircle
     },
     {
       title: "Completed",
-      value: stats.completed_tasks || 0,
+      value: stats?.completed_tasks ?? 0,
       icon: Briefcase
     },
     {
       title: "Pending",
-      value: stats.pending_tasks || 0,
+      value: stats?.pending_tasks ?? 0,
       icon: Clock
     },
     {
       title: "Teams",
-      value: stats.teams || 0,
+      value: stats?.teams ?? 0,
       icon: Users
     }
   ];

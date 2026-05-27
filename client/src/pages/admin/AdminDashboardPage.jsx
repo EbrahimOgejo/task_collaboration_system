@@ -16,7 +16,7 @@ export default function AdminDashboardPage() {
           </p>
         </div>
 
-        <StatsCards />
+        <StatsCards stats={{}} />
 
         <ActivityFeed />
       </div>

@@ -3,6 +3,7 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import TaskTable from "../../components/tasks/TaskTable";
 import Button from "../../components/ui/Button";
 import CreateTaskModal from "../../components/tasks/CreateTaskModal";
+import Spinner from "../../components/ui/Spinner";
 
 import {
   getTasks,
