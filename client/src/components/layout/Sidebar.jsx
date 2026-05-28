@@ -1,3 +1,5 @@
+import { NavLink, useNavigate } from "react-router-dom";
+
 import {
   LayoutDashboard,
   CheckSquare,
@@ -6,38 +8,40 @@ import {
   LogOut
 } from "lucide-react";
 
-import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Sidebar() {
-  const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  const menu = [
+  const navigate = useNavigate();
+
+  const navigation = [
     {
-      icon: LayoutDashboard,
       label: "Dashboard",
-      path: "/dashboard"
+      path: "/dashboard",
+      icon: LayoutDashboard
     },
+
     {
-      icon: CheckSquare,
       label: "Tasks",
-      path: "/tasks"
+      path: "/tasks",
+      icon: CheckSquare
     },
+
     {
-      icon: Users,
       label: "Teams",
-      path: "/teams"
+      path: "/teams",
+      icon: Users
     }
   ];
 
-  if (user?.role === "admin") {
-    menu.push({
-      icon: Shield,
-      label: "Admin",
-      path: "/admin"
-    });
-  }
+  const adminNavigation = [
+    {
+      label: "User Management",
+      path: "/admin/users",
+      icon: Shield
+    }
+  ];
 
   const handleLogout = () => {
     logout();
@@ -45,46 +49,106 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-72 min-h-screen bg-white border-r border-slate-200 flex flex-col">
-      <div className="p-8 border-b border-slate-200">
-        <h1 className="text-2xl font-bold tracking-tight">
+    <aside className="w-72 min-h-screen bg-slate-950 text-white flex flex-col">
+      {/* LOGO */}
+      <div className="px-8 py-8 border-b border-slate-800">
+        <h1 className="text-4xl font-black tracking-tight">
           TaskCollab
         </h1>
+
+        <p className="text-slate-400 text-sm mt-2">
+          Enterprise Task Collaboration System
+        </p>
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
-        {menu.map((item, index) => {
+      {/* NAVIGATION */}
+      <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        {navigation.map((item) => {
           const Icon = item.icon;
 
           return (
-            <Link
-              key={index}
+            <NavLink
+              key={item.path}
               to={item.path}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100 transition"
+              className={({ isActive }) =>
+                `flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-200 ${
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                }`
+              }
             >
-              <Icon size={20} />
-              <span>{item.label}</span>
-            </Link>
+              <Icon size={22} />
+
+              <span className="font-medium">
+                {item.label}
+              </span>
+            </NavLink>
           );
         })}
+
+        {/* ADMIN NAVIGATION */}
+        {user?.role === "admin" && (
+          <>
+            <div className="pt-8 pb-3 px-5">
+              <p className="text-xs uppercase tracking-widest text-slate-500">
+                Administration
+              </p>
+            </div>
+
+            {adminNavigation.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-200 ${
+                      isActive
+                        ? "bg-purple-600 text-white"
+                        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                    }`
+                  }
+                >
+                  <Icon size={22} />
+
+                  <span className="font-medium">
+                    {item.label}
+                  </span>
+                </NavLink>
+              );
+            })}
+          </>
+        )}
       </nav>
 
-      <div className="p-4 border-t border-slate-200 space-y-4">
-        <div className="bg-slate-100 rounded-xl p-4">
-          <p className="font-medium">
-            {user?.username || "Guest"}
-          </p>
+      {/* FOOTER */}
+      <div className="border-t border-slate-800 px-6 py-5 space-y-5">
+        {/* USER INFO */}
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center font-bold text-lg">
+            {user?.username?.charAt(0)?.toUpperCase()}
+          </div>
 
-          <p className="text-sm text-slate-500">
-            {user?.email || ""}
-          </p>
+          <div>
+            <p className="font-semibold">
+              {user?.username}
+            </p>
+
+            <p className="text-sm text-slate-400 capitalize">
+              {user?.role}
+            </p>
+          </div>
         </div>
 
+        {/* LOGOUT BUTTON */}
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-xl"
+          className="w-full flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 transition-all duration-200 rounded-2xl py-3 font-semibold"
         >
-          <LogOut size={18} />
+          <LogOut size={20} />
+
           Logout
         </button>
       </div>

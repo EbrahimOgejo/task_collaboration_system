@@ -1,13 +1,18 @@
 import api from "./api";
 
 export const getUsers = async () => {
-  const response = await api.get("/admin/users");
+  const response = await api.get(
+    "/admin/users"
+  );
+
   return response.data;
 };
 
-export const createUser = async (payload) => {
+export const createUser = async (
+  payload
+) => {
   const response = await api.post(
-    "/admin/create-user",
+    "/admin/users",
     payload
   );
 
@@ -15,14 +20,21 @@ export const createUser = async (payload) => {
 };
 
 export const toggleUserStatus = async (
-  id,
-  isActive
+  userId
 ) => {
-  const endpoint = isActive
-    ? `/admin/deactivate/${id}`
-    : `/admin/activate/${id}`;
+  const response = await api.patch(
+    `/admin/users/${userId}/toggle-status`
+  );
 
-  const response = await api.put(endpoint);
+  return response.data;
+};
+
+export const deleteUser = async (
+  userId
+) => {
+  const response = await api.delete(
+    `/admin/users/${userId}`
+  );
 
   return response.data;
 };

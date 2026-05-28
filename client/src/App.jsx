@@ -5,46 +5,48 @@ import {
   Navigate
 } from "react-router-dom";
 
-import { useAuth } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
-import ForcePasswordResetPage from "./pages/auth/ForcePasswordResetPage";
 
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import TasksPage from "./pages/dashboard/TasksPage";
 import TeamsPage from "./pages/dashboard/TeamsPage";
 
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import UserManagementPage from "./pages/admin/UserManagementPage";
 
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import AdminRoute from "./components/common/AdminRoute";
 
-function AppRoutes() {
-  const { user } = useAuth();
 
+function AppRoutes() {
   return (
     <Routes>
-      {/* Public */}
+      {/* AUTH */}
       <Route
-        path="/"
-        element={
-          user
-            ? <Navigate to="/dashboard" />
-            : <Navigate to="/login" />
-        }
+        path="/login"
+        element={<LoginPage />}
       />
 
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-      <Route path="/force-password-reset" element={<ForcePasswordResetPage />} />
+      <Route
+        path="/signup"
+        element={<RegisterPage />}
+      />
 
-      {/* Protected */}
+      <Route
+        path="/forgot-password"
+        element={<ForgotPasswordPage />}
+      />
+
+      <Route
+        path="/reset-password/:token"
+        element={<ResetPasswordPage />}
+      />
+
+      {/* DASHBOARD */}
       <Route
         path="/dashboard"
         element={
@@ -54,6 +56,7 @@ function AppRoutes() {
         }
       />
 
+      {/* TASKS */}
       <Route
         path="/tasks"
         element={
@@ -63,6 +66,7 @@ function AppRoutes() {
         }
       />
 
+      {/* TEAMS */}
       <Route
         path="/teams"
         element={
@@ -72,16 +76,7 @@ function AppRoutes() {
         }
       />
 
-      {/* Admin */}
-      <Route
-        path="/admin"
-        element={
-          <AdminRoute>
-            <AdminDashboardPage />
-          </AdminRoute>
-        }
-      />
-
+      {/* ADMIN */}
       <Route
         path="/admin/users"
         element={
@@ -90,14 +85,39 @@ function AppRoutes() {
           </AdminRoute>
         }
       />
+
+      {/* ROOT */}
+      <Route
+        path="/"
+        element={
+          <Navigate
+            to="/dashboard"
+            replace
+          />
+        }
+      />
+
+      {/* FALLBACK */}
+      <Route
+        path="*"
+        element={
+          <Navigate
+            to="/dashboard"
+            replace
+          />
+        }
+      />
     </Routes>
   );
 }
 
+
 export default function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
   );
 }

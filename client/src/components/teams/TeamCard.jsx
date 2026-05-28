@@ -1,6 +1,5 @@
 import Card from "../ui/Card";
 import Button from "../ui/Button";
-import Badge from "../ui/Badge";
 
 export default function TeamCard({
   team,
@@ -8,48 +7,67 @@ export default function TeamCard({
   onLeave
 }) {
   return (
-    <Card className="hover:shadow-md transition">
-      <div className="flex justify-between items-start">
+    <Card>
+      <div className="space-y-4">
         <div>
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-2xl font-bold">
             {team.name}
           </h2>
 
           <p className="text-slate-500 mt-2">
-            {team.description || "No description"}
+            {team.description}
           </p>
         </div>
 
-        <Badge type="info">
-          {team.members?.length || 0} Members
-        </Badge>
-      </div>
+        <div>
+          <p className="text-sm text-slate-400">
+            Members
+          </p>
 
-      <div className="flex mt-6 -space-x-3">
-        {(team.members || []).map((member, index) => (
-          <div
-            key={index}
-            className="w-10 h-10 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center font-medium"
-          >
-            {member.username?.[0] || "U"}
+          <div className="mt-3 space-y-2">
+            {team.members?.length > 0 ? (
+              team.members.map((member) => (
+                <div
+                  key={member.id}
+                  className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2"
+                >
+                  <div>
+                    <p className="font-medium">
+                      {member.username}
+                    </p>
+
+                    <p className="text-xs text-slate-500">
+                      {member.email}
+                    </p>
+                  </div>
+
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-md">
+                    {member.role}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="text-slate-400 text-sm">
+                No members yet.
+              </p>
+            )}
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="mt-6 flex gap-3">
-        <Button
-          className="flex-1"
-          onClick={() => onJoin(team.id)}
-        >
-          Join
-        </Button>
+        <div className="flex gap-3 pt-4">
+          <Button
+            onClick={() => onJoin(team.id)}
+          >
+            Join
+          </Button>
 
-        <Button
-          className="flex-1 bg-slate-800 hover:bg-slate-900"
-          onClick={() => onLeave(team.id)}
-        >
-          Leave
-        </Button>
+          <Button
+            variant="secondary"
+            onClick={() => onLeave(team.id)}
+          >
+            Leave
+          </Button>
+        </div>
       </div>
     </Card>
   );
