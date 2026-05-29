@@ -23,7 +23,7 @@ export default function LandingPage() {
           to="/register"
           className="bg-green-600 px-6 py-3 rounded"
         >
-          Register
+          Sign Up
         </Link>
       </div>
     </div>

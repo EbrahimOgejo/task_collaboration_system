@@ -21,7 +21,6 @@ import UserManagementPage from "./pages/admin/UserManagementPage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import AdminRoute from "./components/common/AdminRoute";
 
-
 function AppRoutes() {
   return (
     <Routes>
@@ -32,7 +31,7 @@ function AppRoutes() {
       />
 
       <Route
-        path="/signup"
+        path="/register"
         element={<RegisterPage />}
       />
 
@@ -86,18 +85,7 @@ function AppRoutes() {
         }
       />
 
-      {/* ROOT */}
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to="/dashboard"
-            replace
-          />
-        }
-      />
-
-      {/* FALLBACK */}
+      {/* DEFAULT */}
       <Route
         path="*"
         element={
@@ -111,10 +99,14 @@ function AppRoutes() {
   );
 }
 
-
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>

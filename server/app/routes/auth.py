@@ -145,18 +145,23 @@ def forgot_password():
     if not user:
         return jsonify({
             "message": "If the email exists, reset instructions were sent."
-        })
+        }), 200
 
     token = generate_password_reset_token(user)
 
-    reset_link = f"{current_app.config['FRONTEND_URL']}/reset-password/{token}"
+    reset_link = (
+        f"{current_app.config['FRONTEND_URL']}"
+        f"/reset-password/{token}"
+    )
 
-    send_reset_password_email(user, reset_link)
+    try:
+        send_reset_password_email(user, reset_link)
+    except Exception as e:
+        print("EMAIL ERROR:", str(e))
 
     return jsonify({
         "message": "Reset email sent."
-    })
-
+    }), 200
 
 # RESET PASSWORD
 @auth_bp.route("/reset-password/<token>", methods=["POST"])
